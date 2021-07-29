@@ -1,7 +1,6 @@
 {
   "name": "task",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,5 +11,16 @@
     "axios": "^0.21.1",
     "express": "^4.17.1",
     "mongoose": "^5.13.3"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ofirlevy6658/backend-task.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/ofirlevy6658/backend-task/issues"
+  },
+  "homepage": "https://github.com/ofirlevy6658/backend-task#readme",
+  "description": ""
 }
