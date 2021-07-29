@@ -17,9 +17,14 @@ stream.on("error", (err) => {
 	console.error(err);
 });
 
+let prevCurrency = 0;
 async function queueRandomMessage() {
 	const euro = await Currency.findOne({ name: "EUR" });
 	const event = { name: euro.name, exchangeRate: euro.exchangeRate.toString() };
+	console.log(euro.exchangeRate);
+	console.log(prevCurrency);
+	if (prevCurrency === euro.exchangeRate || euro.exchangeRate < 0.85) return;
+	prevCurrency = euro.exchangeRate;
 	const success = stream.write(eventType.toBuffer(event));
 	if (success) {
 		console.log(`message queued (${JSON.stringify(event)})`);
