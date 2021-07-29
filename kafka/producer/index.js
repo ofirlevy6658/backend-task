@@ -21,11 +21,11 @@ let prevCurrency = 0;
 async function queueRandomMessage() {
 	const euro = await Currency.findOne({ name: "EUR" });
 	const event = { name: euro.name, exchangeRate: euro.exchangeRate.toString() };
-	console.log(euro.exchangeRate);
 	console.log(prevCurrency);
-	if (prevCurrency === euro.exchangeRate || euro.exchangeRate < 0.85) return;
-	prevCurrency = euro.exchangeRate;
+	console.log(euro.exchangeRate);
+	if (prevCurrency === euro.exchangeRate || euro.exchangeRate < 0.53) return;
 	const success = stream.write(eventType.toBuffer(event));
+	prevCurrency = euro.exchangeRate;
 	if (success) {
 		console.log(`message queued (${JSON.stringify(event)})`);
 	} else {

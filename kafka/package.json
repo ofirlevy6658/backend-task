@@ -12,6 +12,7 @@
   "dependencies": {
     "avsc": "^5.7.1",
     "axios": "^0.21.1",
+    "mongoose": "^5.13.4",
     "node-rdkafka": "^2.10.1"
   }
 }
