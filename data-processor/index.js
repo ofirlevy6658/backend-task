@@ -1,23 +1,22 @@
 const axios = require("axios");
-const express = require("express");
 const Currency = require("./model/currency");
-
 require("./db/mongoose");
+require("dotenv").config();
 
-const app = express();
+const api_key = process.env.API_KEY;
 
 const fetchCurrency = async () => {
 	try {
 		const { data } = await axios.get(
-			"https://api.exchangerate.host/latest?base=USD"
+			`https://api.currencyscoop.com/v1/latest?api_key=${api_key}`
 		);
-		return data.rates.EUR;
+		return data.response.rates.EUR;
 	} catch (e) {
 		console.log(e.message);
 	}
 };
 
-const updateExchangeRate = () => {
+(function updateExchangeRate() {
 	setInterval(async () => {
 		try {
 			const newExchangeRate = await fetchCurrency();
@@ -29,9 +28,8 @@ const updateExchangeRate = () => {
 		} catch (e) {
 			console.log(e.message);
 		}
-	}, 2500);
-};
-updateExchangeRate();
+	}, 35000);
+})();
 
 // const curn = new Currency({
 // 	name: "EUR",
@@ -44,8 +42,3 @@ updateExchangeRate();
 // 		console.log("work");
 // 	})
 // 	.catch(() => console.log("fail"));
-
-const PORT = 3000;
-app.listen(PORT, () => {
-	console.log(`listening on port ${PORT}`);
-});

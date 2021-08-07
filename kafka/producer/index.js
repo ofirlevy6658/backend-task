@@ -17,22 +17,26 @@ stream.on("error", (err) => {
 	console.error(err);
 });
 
-let prevCurrency = 0;
-async function queueRandomMessage() {
-	const euro = await Currency.findOne({ name: "EUR" });
-	const event = { name: euro.name, exchangeRate: euro.exchangeRate.toString() };
-	console.log(prevCurrency);
-	console.log(euro.exchangeRate);
-	if (prevCurrency === euro.exchangeRate || euro.exchangeRate < 0.53) return;
-	const success = stream.write(eventType.toBuffer(event));
-	prevCurrency = euro.exchangeRate;
-	if (success) {
-		console.log(`message queued (${JSON.stringify(event)})`);
-	} else {
-		console.log("Too many messages in the queue already..");
-	}
-}
-
-setInterval(() => {
-	queueRandomMessage();
-}, 3000);
+(function queue() {
+	const threshold = 0.83;
+	let prevExchangeRate = 0;
+	setInterval(async () => {
+		try {
+			const euro = await Currency.findOne({ name: "EUR" });
+			const event = {
+				name: euro.name,
+				exchangeRate: euro.exchangeRate.toString(),
+			};
+			if (
+				euro.exchangeRate === prevExchangeRate ||
+				euro.exchangeRate < threshold
+			)
+				return;
+			prevExchangeRate = euro.exchangeRate;
+			const success = stream.write(eventType.toBuffer(event));
+			if (success) console.log(`message queued (${JSON.stringify(event)})`);
+		} catch (e) {
+			console.log(e.message);
+		}
+	}, 1000);
+})();

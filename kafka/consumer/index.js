@@ -19,7 +19,7 @@ consumer
 	})
 	.on("data", function (data) {
 		axios.post(
-			"https://webhook.site/d13999c2-1e5c-441f-9aa6-76712851f005",
+			"https://webhook.site/ed26e126-8ffe-4a23-855c-e6286403b73b",
 			eventType.fromBuffer(data.value)
 		);
 		console.log(`received message: ${eventType.fromBuffer(data.value)}`);
